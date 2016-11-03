@@ -1,5 +1,3 @@
-
-
 from flask import Flask, jsonify, abort, request
 import os
 import socket
@@ -9,14 +7,22 @@ import base64
 from threading import Thread
 
 app = Flask(__name__)
+
+#GET Action
 @app.route('/')
-@app.route('/kidsbus',methods=['GET'])
+@app.route('/kidsbus/get',methods=['GET'])
 def getKidsbus():
-    return 'Hello Kidbus',200
+
+    return jsonify({'test':"GET HELLO KIDSBUS"}),201
+
+#POST Action
+@app.route('/kidsbus/post',methods=['POST'])
+def postPatient():
+    print(request.json);
+    return "POST HELLO KIDSBUS",201
 
 
 #Main
 if __name__ == '__main__':
-
-    app.run(host='155.230.118.252',port=5001,debug=True)
+    app.run(host='0.0.0.0',port=5001,debug=True)
 
