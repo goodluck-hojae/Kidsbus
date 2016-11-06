@@ -51,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
                 new Thread() {
                     @Override
                     public void run() {
-                        String address = "http://155.230.118.252:5001/kidsbus/get";
-                        //get(address);
-                        address = "http://155.230.118.252:5001/kidsbus/post";
+                        String get_addr = "http://192.168.123.180:5001/kidsbus/get";
+                        get(get_addr);
+                        String post_addr = "http://192.168.123.180:5001/kidsbus/post";
                         try {
-                            post(address);
+                            post(post_addr);
                             Log.i("test","post");
                         } catch (IOException e) {
                             e.printStackTrace();
