@@ -11,7 +11,7 @@ class Parent(Base):
     __tablename__ = 'parent'
     id = Column(Integer, primary_key=True)
     name = Column(String(20), nullable=False)
-    account = Column(String(20), nullable=False)
+    account = Column(String(20), unique=True, nullable=False)
     password = Column(String(20), nullable=False)
     birth_date = Column(String(20))
     phone_number = Column(String(20), nullable=False)
@@ -19,7 +19,7 @@ class Parent(Base):
 class Location(Base):
     __tablename__ = 'location'
     id = Column(Integer, primary_key=True)
-    name = Column(String(20), nullable=False)
+    name = Column(String(20), unique=True, nullable=False)
     latitude = Column(String(20), nullable=False)
     longitude = Column(String(20), nullable=False)
 
