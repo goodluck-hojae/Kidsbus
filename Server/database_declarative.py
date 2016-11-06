@@ -38,9 +38,9 @@ class Attentance(Base):
     __tablename__ = 'attendance'
     id = Column(Integer, primary_key=True)
     date = Column(String(20),nullable=False)
+    is_attended = Column(String(1),nullable=False)
     child_id = Column(Integer, ForeignKey('child.id'))
     child = relationship(Child)
-
 
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
