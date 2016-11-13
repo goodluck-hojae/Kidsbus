@@ -51,9 +51,15 @@ public class MainActivity extends AppCompatActivity {
                 new Thread() {
                     @Override
                     public void run() {
-                        String get_addr = "http://192.168.123.180:5001/kidsbus/get";
-                        get(get_addr);
-                        String post_addr = "http://192.168.123.180:5001/kidsbus/post";
+                        String basic_addr = "http://155.230.118.252:5001/kidsbus/get_parent_id_by_name/";
+                        try {
+                            String parameter = URLEncoder.encode(new String("호재".getBytes("UTF-8")));
+                            String get_addr = basic_addr+parameter;
+                            get(get_addr);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        /*String post_addr = "http://192.168.123.180:5001/kidsbus/post";
                         try {
                             post(post_addr);
                             Log.i("test","post");
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
                 }.start();
             }

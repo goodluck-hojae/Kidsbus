@@ -9,6 +9,10 @@ DBSession.bind = engine
 import json
 app = Flask(__name__)
 session = DBSession()
+@app.route('/')
+@app.route('/kidsbus/',methods=['GET'])
+def hello():
+    return "kidsbus",200
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''GET'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # Get Parent Id
@@ -148,4 +152,4 @@ def register_child():
 
 #Main
 if __name__ == '__main__':
-    app.run(host='localhost',port=5001,debug=True)
+    app.run(host='155.230.118.252',port=5001,debug = True)
