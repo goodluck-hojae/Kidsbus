@@ -17,29 +17,39 @@ def hello():
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''GET'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # Get Parent Id
 @app.route('/kidsbus/get_parent_id_by_name/<name>',methods=['GET'])
-def get_parent_id(name):
+def get_parent_id_by_name(name):
     parent = session.query(Parent).filter(Parent.name == name).first()
     return  json.dumps({'parent_id':parent.id}, ensure_ascii=False)
 
 # Get Child Id
 @app.route('/kidsbus/get_child_id_by_name/<name>',methods=['GET'])
-def get_child_id(name):
+def get_child_id_by_name(name):
     child = session.query(Child).filter(Child.name == name).first()
     return  json.dumps({'child_id':child.id}, ensure_ascii=False)
 
 # Get Location Id
 @app.route('/kidsbus/get_location_id_by_name/<name>',methods=['GET'])
-def get_location_id(name):
+def get_location_id_by_name(name):
     location = session.query(Location).filter(Location.name == name).first()
     return  json.dumps({'location_id':location.id}, ensure_ascii=False)
 
 # Get Attendance Id
 @app.route('/kidsbus/get_attendance_id_by_child_id/<int:id>',methods=['GET'])
-def get_attendance_id(id):
+def get_attendance_id_by_child_id(id):
     attendacne = session.query(Attentance).filter(Attentance.child_id == id).first()
     return  json.dumps({'attendance_id':attendacne.id}, ensure_ascii=False)
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-# Get Parent Id
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''LOG IN VERIFICATION'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+#Get Password
+@app.route('/kidsbus/login/<account>/<password>',methods=['GET'])
+def login(account,password):
+    parent = session.query(Parent).filter(Parent.account == account).first()
+    if parent.password == password:
+        return "T",200
+    return "F", 401
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''GET INFORMATION WITH ID'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+# Get Parent Info
 @app.route('/kidsbus/get_parent_info_by_id/<int:id>',methods=['GET'])
 def get_parent_info_by_id(id):
     parent = session.query(Parent).filter(Parent.id == id).first()
@@ -52,7 +62,7 @@ def get_parent_info_by_id(id):
                        'parent_location_id': parent.location_id}, ensure_ascii=False)
 
 
-# Get Child Id
+# Get Child Info
 @app.route('/kidsbus/get_child_info_by_id/<int:id>',methods=['GET'])
 def get_child_info_by_id(id):
     child = session.query(Child).filter(Child.id == id).first()
@@ -61,7 +71,7 @@ def get_child_info_by_id(id):
                        'child_gender': child.gender,
                        'child_birth_date':  child.birth_date,
                        'child_parent_id': child.parent_id} , ensure_ascii=False)
-# Get Location Id
+# Get Location Info
 @app.route('/kidsbus/get_location_info_by_id/<int:id>',methods=['GET'])
 def get_location_info_by_id(id):
     location = session.query(Location).filter(Location.id == id).first()
@@ -70,7 +80,7 @@ def get_location_info_by_id(id):
                        'location_latitude': location.latitude,
                        'location_longitude':  location.longitude, } , ensure_ascii=False)
 
-# Get Attendance Id
+# Get Attendance Info
 @app.route('/kidsbus/get_attendance_info_by_id/<int:id>',methods=['GET'])
 def get_attendance_info_by_id(id):
     attendacne = session.query(Attentance).filter(Attentance.id == id).first()
