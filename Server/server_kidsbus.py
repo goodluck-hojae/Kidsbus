@@ -39,6 +39,45 @@ def get_attendance_id(id):
     attendacne = session.query(Attentance).filter(Attentance.child_id == id).first()
     return  json.dumps({'attendance_id':attendacne.id}, ensure_ascii=False)
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+# Get Parent Id
+@app.route('/kidsbus/get_parent_info_by_id/<int:id>',methods=['GET'])
+def get_parent_info_by_id(id):
+    parent = session.query(Parent).filter(Parent.id == id).first()
+    return json.dumps({'parent_id':parent.id,
+                       'parent_name':parent.name,
+                       'parent_account':parent.account,
+                       'parent_password':parent.password,
+                       'parent_birth_date':parent.birth_date,
+                       'parent_phone_number':parent.phone_number,
+                       'parent_location_id': parent.location_id}, ensure_ascii=False)
+
+
+# Get Child Id
+@app.route('/kidsbus/get_child_info_by_id/<int:id>',methods=['GET'])
+def get_child_info_by_id(id):
+    child = session.query(Child).filter(Child.id == id).first()
+    return json.dumps({'child_id': child.id,
+                       'child_name': child.name,
+                       'child_gender': child.gender,
+                       'child_birth_date':  child.birth_date,
+                       'child_parent_id': child.parent_id} , ensure_ascii=False)
+# Get Location Id
+@app.route('/kidsbus/get_location_info_by_id/<int:id>',methods=['GET'])
+def get_location_info_by_id(id):
+    location = session.query(Location).filter(Location.id == id).first()
+    return  json.dumps({'location_id': location.id,
+                       'location_name': location.name,
+                       'location_latitude': location.latitude,
+                       'location_longitude':  location.longitude, } , ensure_ascii=False)
+
+# Get Attendance Id
+@app.route('/kidsbus/get_attendance_info_by_id/<int:id>',methods=['GET'])
+def get_attendance_info_by_id(id):
+    attendacne = session.query(Attentance).filter(Attentance.id == id).first()
+    return json.dumps({'attendacne_id': attendacne.id,
+                       'attendacne_date': attendacne.date,
+                       'attendacne_is_attended': attendacne.is_attended,
+                       'attendacne_child_id': attendacne.child_id }, ensure_ascii=False)
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''POST'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # Register Parent
@@ -52,7 +91,8 @@ def register_parent():
                         account = parent_json['parent']['account'],
                         password = parent_json['parent']['password'],
                         birth_date = parent_json['parent']['birth_date'],
-                        phone_number = parent_json['parent']['phone_number'])
+                        phone_number = parent_json['parent']['phone_number'],
+                        location_id = parent_json['parent']['location_id'])
 
     session.add(new_parent)
     session.commit()
@@ -65,7 +105,8 @@ def register_parent():
             "account": parent_json['parent']['account'],
             "password": parent_json['parent']['password'],
             'birth_date': parent_json['parent']['birth_date'],
-            'phone_number': parent_json['parent']['phone_number']
+            'phone_number': parent_json['parent']['phone_number'],
+            'location_id':  parent_json['parent']['location_id']
         }
     }
     return  json.dumps(parent, ensure_ascii=False) , 200
@@ -129,8 +170,7 @@ def register_child():
     new_child = Child(name = child_json['child']['name'],
                       gender= child_json['child']['gender'],
                       birth_date = child_json['child']['birth_date'],
-                      parent_id = child_json['child']['parent_id'],
-                      location_id = child_json['child']['location_id'])
+                      parent_id = child_json['child']['parent_id'] )
     session.add(new_child)
     session.commit()
 
@@ -141,8 +181,7 @@ def register_child():
             "name": child_json['child']['name'],
             "gender": child_json['child']['gender'],
             "birth_date": child_json['child']['birth_date'],
-            "parent_id": child_json['child']['parent_id'],
-            "location_id":child_json['child']['location_id']
+            "parent_id": child_json['child']['parent_id']
         }
     }
 

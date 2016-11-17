@@ -7,6 +7,13 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+class Location(Base):
+    __tablename__ = 'location'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(20), unique=True, nullable=False)
+    latitude = Column(String(20), nullable=False)
+    longitude = Column(String(20), nullable=False)
+
 class Parent(Base):
     __tablename__ = 'parent'
     id = Column(Integer, primary_key=True)
@@ -15,13 +22,9 @@ class Parent(Base):
     password = Column(String(20), nullable=False)
     birth_date = Column(String(20))
     phone_number = Column(String(20), nullable=False)
+    location_id = Column(Integer, ForeignKey('location.id'))
+    location = relationship(Location)
 
-class Location(Base):
-    __tablename__ = 'location'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(20), unique=True, nullable=False)
-    latitude = Column(String(20), nullable=False)
-    longitude = Column(String(20), nullable=False)
 
 class Child(Base):
     __tablename__ = 'child'
@@ -31,8 +34,6 @@ class Child(Base):
     birth_date = Column(String(20), nullable=False)
     parent_id = Column(Integer, ForeignKey('parent.id'))
     parent = relationship(Parent)
-    location_id = Column(Integer, ForeignKey('location.id'))
-    location = relationship(Location)
 
 class Attentance(Base):
     __tablename__ = 'attendance'
