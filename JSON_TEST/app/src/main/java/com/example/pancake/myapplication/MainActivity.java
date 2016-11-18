@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -51,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
                 new Thread() {
                     @Override
                     public void run() {
-                        String basic_addr = "http://155.230.118.252:5001/kidsbus/get_parent_id_by_name/";
+                        String basic_addr = "http://155.230.118.252:5001/kidsbus/get_location_id_by_name/";
                         try {
-                            String parameter = URLEncoder.encode(new String("호재".getBytes("UTF-8")));
+                            String parameter = URLEncoder.encode(new String("경북대학교".getBytes("UTF-8")));
                             String get_addr = basic_addr+parameter;
-                            get(get_addr);
+
+                            TextView result = (TextView)findViewById(R.id.get);
+                            result.setText(get(get_addr));
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -145,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
             urlConn.setRequestProperty("Accept", "*/*");
 
             int resCode = urlConn.getResponseCode();
-            System.out.println("resCode" + resCode);
+            Log.i("test",String.valueOf(resCode));
+            Log.i("test","dd");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
             String input;

@@ -45,32 +45,34 @@ def get_attendance_id_by_child_id(id):
 def login(account,password):
     parent = session.query(Parent).filter(Parent.account == account).first()
     if parent.password == password:
-        return "T",200
-    return "F", 401
+        return json.dumps({'parent_id': parent.id}),200
+    return "", 401
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''GET INFORMATION WITH ID'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # Get Parent Info
 @app.route('/kidsbus/get_parent_info_by_id/<int:id>',methods=['GET'])
 def get_parent_info_by_id(id):
     parent = session.query(Parent).filter(Parent.id == id).first()
-    return json.dumps({'parent_id':parent.id,
-                       'parent_name':parent.name,
-                       'parent_account':parent.account,
-                       'parent_password':parent.password,
+    return json.dumps({'parent_name':parent.name,
                        'parent_birth_date':parent.birth_date,
                        'parent_phone_number':parent.phone_number,
                        'parent_location_id': parent.location_id}, ensure_ascii=False)
 
 
 # Get Child Info
-@app.route('/kidsbus/get_child_info_by_id/<int:id>',methods=['GET'])
-def get_child_info_by_id(id):
-    child = session.query(Child).filter(Child.id == id).first()
-    return json.dumps({'child_id': child.id,
+@app.route('/kidsbus/get_children_info_by_parent_id/<int:id>',methods=['GET'])
+def get_children_info_by_parent_id(id):
+    children = session.query(Child).filter(Child.parent_id == id).all()
+    children_json = []
+    for child in children:
+        children_json.append({'child_id': child.id,
                        'child_name': child.name,
                        'child_gender': child.gender,
                        'child_birth_date':  child.birth_date,
-                       'child_parent_id': child.parent_id} , ensure_ascii=False)
+                       'child_parent_id': child.parent_id})
+    return json.dumps(children_json , ensure_ascii=False)
+
+
 # Get Location Info
 @app.route('/kidsbus/get_location_info_by_id/<int:id>',methods=['GET'])
 def get_location_info_by_id(id):
@@ -201,4 +203,4 @@ def register_child():
 
 #Main
 if __name__ == '__main__':
-    app.run(host='155.230.118.252',port=5001,debug = True)
+    app.run(host='155.230.118.252', port=5001, debug = True)

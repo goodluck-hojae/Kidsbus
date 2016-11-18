@@ -22,12 +22,17 @@ session.add(new_location)
 session.commit()
 
 # Insert a Person in the person table
-new_parent = Parent(name ="호재",account = "sonhj97",password = "1234",birth_date = "910707", phone_number = "010-9309-1329", location = new_location)
+new_parent = Parent(name ="호재",account = "sonhj97",password = "1234",birth_date = "19910707", phone_number = "010-9309-1329", location = new_location)
 session.add(new_parent)
 session.commit()
 
 # Insert an Address in the address table
 new_child = Child(name = '아이',gender='M',birth_date ='200000',parent = new_parent)
+session.add(new_child)
+session.commit()
+
+
+new_child = Child(name = '아이2',gender='W',birth_date ='19980607',parent = new_parent)
 session.add(new_child)
 session.commit()
 
