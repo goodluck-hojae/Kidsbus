@@ -9,6 +9,9 @@ import android.widget.RelativeLayout;
 import com.skp.Tmap.TMapView;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -42,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 new Thread() {
                     @Override
                     public void run() {
-                        try {
-                            String startX="128.611238";
+                        try {String startX="128.611238";
                             String startY="35.884982";
                             String endX="128.611971";
                             String endY="35.885180";
@@ -61,12 +63,26 @@ public class MainActivity extends AppCompatActivity {
                             //  Here you read any answer from server.
                             BufferedReader serverAnswer = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                             String line;
+                            String jsonString = "";
                             while ((line = serverAnswer.readLine()) != null) {
-
-                                Log.i("LINE: ", line); //<--If any response from server
+                                jsonString += line;
                                 //use it as you need, if server send something back you will get it here.
                             }
-
+                            Log.i("LINE: ", jsonString); //<--If any response from server
+                            JSONObject jsonObject = new JSONObject(jsonString);
+                            JSONArray jsonArray = jsonObject.getJSONArray("features");
+                            for(int i=0; i<jsonArray.length(); i++){
+                                JSONArray jsonCoordinates = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates");
+                                for(int j=0; j<jsonCoordinates.length(); j++) {
+                                    if (!jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates").getString(0).startsWith("[")) {
+                                        Log.i("NUMBER", jsonCoordinates.getString(0));
+                                        Log.i("NUMBER", jsonCoordinates.getString(1));
+                                    }else {
+                                        Log.i("NUMBER", jsonCoordinates.getJSONArray(j).getString(0));
+                                        Log.i("NUMBER", jsonCoordinates.getJSONArray(j).getString(1));
+                                    }
+                                }
+                            }
                             wr.close();
                             serverAnswer.close();
 
