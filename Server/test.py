@@ -9,6 +9,8 @@ session = DBSession()
 # Make a query to find all Persons in the database
 session.query(Parent).all()
 
+parent = session.query(Parent).filter(Parent.account == "19921116").first()
+print(parent.account)
  # Return the first Person from all Persons in the database
 person = session.query(Parent).first()
 print(person.name)

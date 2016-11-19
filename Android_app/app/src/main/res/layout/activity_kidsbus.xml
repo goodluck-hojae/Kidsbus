@@ -1,0 +1,518 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:weightSum="1">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/textView20"
+        android:textSize="30dp"
+        android:gravity="center"/>
+
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerVertical="true" android:layout_centerHorizontal="true" android:id="@+id/main"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#B9E2FA">
+
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:text="일" android:id="@+id/textView"
+                android:layout_weight="1"  android:gravity="center" android:textColor="#FF0000"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="월"
+                android:id="@+id/textView2"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="화"
+                android:id="@+id/textView3"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="수"
+                android:id="@+id/textView5"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="목"
+                android:id="@+id/textView6"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="금"
+                android:id="@+id/textView16"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="토"
+                android:id="@+id/textView17"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:gravity="center"
+                android:textColor="#0000FF"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="day" android:id="@+id/tday0"
+                android:layout_weight="1"  android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday1"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday2"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday3"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday4"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday5"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday6"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button  android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button0" android:background="#ffffff"   />
+            <Button  android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button1" android:background="#ffffff"   />
+            <Button  android:layout_weight="1"  android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Button2" android:background="#ffffff"   />
+
+            <Button  android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button3" android:background="#ffffff"   />
+
+            <Button  android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button4" android:background="#ffffff"   />
+            <Button  android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button5" android:background="#ffffff"   />
+            <Button  android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button6" android:background="#ffffff"   />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="day"
+            android:id="@+id/tday7"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="day"
+            android:id="@+id/tday8"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="day"
+            android:id="@+id/tday9"
+            android:layout_weight="1"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="day"
+            android:id="@+id/tday10"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="day"
+            android:id="@+id/tday11"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="day"
+            android:id="@+id/tday12"
+            android:layout_weight="1"
+            android:focusable="true"
+            android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday13"
+                android:layout_weight="1"
+                android:gravity="center"/>
+    </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button7" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button8" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button9" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button10" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button11" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button12" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button13" android:background="#ffffff"   android:layout_weight="1" android:focusable="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+        <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="day"
+        android:id="@+id/tday14"
+        android:layout_weight="1"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="day"
+        android:id="@+id/tday15"
+        android:layout_weight="1"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="day"
+        android:id="@+id/tday16"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="day"
+        android:id="@+id/tday17"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="day"
+        android:id="@+id/tday18"
+        android:layout_weight="1"
+        android:focusable="true"
+        android:gravity="center"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="day"
+            android:id="@+id/tday19"
+            android:layout_weight="1"  android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="day"
+            android:id="@+id/tday20"
+            android:layout_weight="1"
+            android:gravity="center"/>
+</LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button14" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button15" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button16" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button17" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button18" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button19" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button20" android:background="#ffffff"   android:layout_weight="1" android:focusable="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday21"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday22"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday23"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday24"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday25"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday26"
+                android:layout_weight="1"  android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday27"
+                android:layout_weight="1"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button21" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button22" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button23" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button24" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button25" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button26" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button27" android:background="#ffffff"   android:layout_weight="1" android:focusable="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday28"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday29"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday30"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday31"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday32"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday33"
+                android:layout_weight="1"  android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday34"
+                android:layout_weight="1"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button28" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button29" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button30" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button31" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button32" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button33" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button34" android:background="#ffffff"   android:layout_weight="1" android:focusable="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday35"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday36"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday37"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday38"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday39"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday40"
+                android:layout_weight="1"  android:gravity="center"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="day"
+                android:id="@+id/tday41"
+                android:layout_weight="1"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button35" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button36" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button37" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button38" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button39" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button40" android:background="#ffffff"   android:layout_weight="1"/>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"  android:id="@+id/Button41" android:background="#ffffff"   android:layout_weight="1" android:focusable="true"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

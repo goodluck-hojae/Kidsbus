@@ -17,10 +17,14 @@ DBSession = sessionmaker(bind=engine)
 # session.rollback()
 session = DBSession()
 
-new_location = Location(name = "경북대학교", latitude ="0.0",longitude = "0.0")
+new_location = Location(name = "경북대학교25", latitude ="147.0",longitude = "37")
 session.add(new_location)
 session.commit()
 
+new_location = Location(name = "경북대학교213", latitude ="159.0",longitude = "10.0")
+session.add(new_location)
+session.commit()
+'''
 # Insert a Person in the person table
 new_parent = Parent(name ="호재",account = "sonhj97",password = "1234",birth_date = "19910707", phone_number = "010-9309-1329", location = new_location)
 session.add(new_parent)
@@ -39,3 +43,4 @@ session.commit()
 new_attendance = Attentance(date = "10/24/2016", is_attended = 'True', child_id = 1)
 session.add(new_attendance)
 session.commit()
+'''

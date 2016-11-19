@@ -32,7 +32,7 @@ class Child(Base):
     name = Column(String(20), nullable=False)
     gender = Column(String(1), nullable=False)
     birth_date = Column(String(20), nullable=False)
-    parent_id = Column(Integer, ForeignKey('parent.id'))
+    parent_id = Column(Integer, ForeignKey('parent.id'), nullable=False)
     parent = relationship(Parent)
 
 class Attentance(Base):

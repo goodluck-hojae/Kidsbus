@@ -82,6 +82,26 @@ def get_location_info_by_id(id):
                        'location_latitude': location.latitude,
                        'location_longitude':  location.longitude, } , ensure_ascii=False)
 
+# Get Location Info
+@app.route('/kidsbus/get_all_location_info',methods=['GET'])
+def get_all_location_info():
+    locations = session.query(Location).all()
+    location_json = []
+    for location in locations:
+        location_json.append({'location_id': location.id,
+                       'location_name': location.name,
+                       'location_latitude': location.latitude,
+                       'location_longitude':  location.longitude, })
+    return json.dumps(location_json , ensure_ascii=False)
+
+bus_latitude = None
+bus_longitude = None
+@app.route('/kidsbus/get_current_bus_location',methods=['GET'])
+def get_current_bus_location():
+    return json.dumps({"latitude" : bus_latitude,
+                        "longitude" : bus_longitude}, ensure_ascii=False),200
+
+
 # Get Attendance Info
 @app.route('/kidsbus/get_attendance_info_by_id/<int:id>',methods=['GET'])
 def get_attendance_info_by_id(id):
@@ -97,7 +117,6 @@ def get_attendance_info_by_id(id):
 def register_parent():
     #GET REQUEST
     parent_json = request.json
-
     #DASTBASE OBJECT
     new_parent = Parent(name=parent_json['parent']['name'],
                         account = parent_json['parent']['account'],
@@ -147,6 +166,17 @@ def register_location():
 
     return  json.dumps(location, ensure_ascii=False) , 200
 
+# Post recent bus location information
+@app.route('/kidsbus/post_current_bus_location', methods=['POST'])
+def post_current_bus_location():
+
+    location_json = request.json
+    global bus_latitude
+    global bus_longitude
+    bus_latitude = location_json['latitude']
+    bus_longitude = location_json['longitude']
+    return json.dumps({"latitude" : bus_latitude,
+                        "longitude" : bus_longitude}, ensure_ascii=False), 200
 # Register Attendance
 @app.route('/kidsbus/post/register_attendance', methods=['POST'])
 def register_attendance():
@@ -200,7 +230,18 @@ def register_child():
     return json.dumps(child, ensure_ascii=False), 200
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''DELETE'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+@app.route('/kidsbus/get/delete_child/<int:id>', methods=['GET'])
+def delete_child(id):
+    child = session.query(Child).filter(Child.id == id).first()
+    session.delete(child)
+    session.commit()
+
+    return json.dumps({"deleted id":id}, ensure_ascii=False), 200
 
 #Main
 if __name__ == '__main__':
     app.run(host='155.230.118.252', port=5001, debug = True)
+
+
