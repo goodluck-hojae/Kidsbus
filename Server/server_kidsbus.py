@@ -36,8 +36,14 @@ def get_location_id_by_name(name):
 # Get Attendance Id
 @app.route('/kidsbus/get_attendance_id_by_child_id/<int:id>',methods=['GET'])
 def get_attendance_id_by_child_id(id):
-    attendacne = session.query(Attentance).filter(Attentance.child_id == id).first()
-    return  json.dumps({'attendance_id':attendacne.id}, ensure_ascii=False)
+    attendacnes = session.query(Attentance).filter(Attentance.child_id == id).all()
+    attendacne_json = []
+    for attendacne in attendacnes:
+        attendacne_json.append({'attendacne_id': attendacne.id,
+                              'attendacne_date': attendacne.date,
+                              'attendacne_is_attended': attendacne.is_attended,
+                              'attendacne_child_id': attendacne.child_id,})
+    return json.dumps(attendacne_json, ensure_ascii=False)
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''LOG IN VERIFICATION'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 #Get Password
@@ -230,6 +236,14 @@ def register_child():
     return json.dumps(child, ensure_ascii=False), 200
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''UPDATE'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+@app.route('/kidsbus/post/update_parent/<int:id>', methods=['GET'])
+def update_parent(id):
+    parent = session.query(Parent).filter(Parent.id == id).first()
+    parent.location_id = 3
+    session.commit()
+
+    return json.dumps({"update location id":3}, ensure_ascii=False), 200
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''DELETE'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 @app.route('/kidsbus/get/delete_child/<int:id>', methods=['GET'])
@@ -240,6 +254,13 @@ def delete_child(id):
 
     return json.dumps({"deleted id":id}, ensure_ascii=False), 200
 
+@app.route('/kidsbus/get/delete_location/<int:id>', methods=['GET'])
+def delete_location(id):
+    location = session.query(Location).filter(Location.id == id).first()
+    session.delete(location)
+    session.commit()
+
+    return json.dumps({"deleted id":id}, ensure_ascii=False), 200
 #Main
 if __name__ == '__main__':
     app.run(host='155.230.118.252', port=5001, debug = True)
