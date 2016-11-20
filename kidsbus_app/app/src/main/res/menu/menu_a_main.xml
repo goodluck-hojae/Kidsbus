@@ -2,11 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.test.app.mid_project.aMainActivity">
-    <item
-        android:id="@+id/action_position"
-        android:icon="@drawable/ic_action_position"
-        android:title="@string/action_menu"
-        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_menu"
@@ -18,9 +13,9 @@
             <item
                 android:id="@+id/subMenu1"
                 android:title="내 정보"   />
-            <item
-                android:id="@+id/subMenu2"
-                android:title="버스 탑승 여부"   />
+            <!--<item-->
+                <!--android:id="@+id/subMenu2"-->
+                <!--android:title="버스 탑승 여부"   />-->
             <item
                 android:id="@+id/subMenu3"
                 android:title="로그아웃"   />

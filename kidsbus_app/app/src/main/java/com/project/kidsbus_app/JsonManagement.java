@@ -16,8 +16,11 @@ public class JsonManagement {
     public JsonManagement(){
 
     }
-    public static String getBusLocation(String str){
+    public static BusLocation getBusLocation(String str){
         StringBuffer sb = new StringBuffer();
+
+        BusLocation result=new BusLocation();
+        BusLocation fail=new BusLocation("fail","fail");
         str="["+str+"]";
         try {
             JSONArray jarray = new JSONArray(str);   // JSONArray 생성
@@ -25,13 +28,14 @@ public class JsonManagement {
                 JSONObject jObject = jarray.getJSONObject(i);  // JSONObject 추출
                 String lat= jObject.getString("latitude");
                 String lon= jObject.getString("longitude");
-                sb.append(lat+"/"+lon);
+                result.setLat(lat);
+                result.setLon(lon);
             }
-            return sb.toString();
+            return result;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return str;
+        return fail;
     }
 
     public static String get_pid(String str){

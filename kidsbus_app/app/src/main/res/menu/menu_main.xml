@@ -21,9 +21,9 @@
         <item
             android:id="@+id/Menu_Kidsbus"
             android:title="버스 탑승 여부"   />
-        <item
-            android:id="@+id/sub3"
-            android:title="내 아이 하교 확인"   />
+        <!--<item-->
+            <!--android:id="@+id/sub3"-->
+            <!--android:title="내 아이 하교 확인"   />-->
         <item
             android:id="@+id/logout"
             android:title="로그아웃"   />

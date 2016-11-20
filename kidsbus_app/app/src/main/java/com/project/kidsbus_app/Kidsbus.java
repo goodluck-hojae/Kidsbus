@@ -19,12 +19,12 @@ public class Kidsbus extends AppCompatActivity {
     Calendar[] c = new Calendar[42];
     TextView[] day=new TextView[42];
     Button[] tb = new Button[42];
-    Calendar cal = Calendar.getInstance();
-    ArrayList<Day> inputday=new ArrayList<>();
 
+    ArrayList<Day> inputday=new ArrayList<>();
+    int month;
     PostThread thread0;
-    SharedPreferences setting;
-    SharedPreferences.Editor editor;
+//    SharedPreferences setting;
+//    SharedPreferences.Editor editor;
 
 
     String cid;
@@ -39,7 +39,6 @@ public class Kidsbus extends AppCompatActivity {
 
         sName=(TextView)findViewById(R.id.textView20);
 
-
         initializeCalendar();
         initializeButton();
         Intent intent = getIntent();
@@ -48,7 +47,7 @@ public class Kidsbus extends AppCompatActivity {
 
         setCalender();
 
-        sName.setText(" "+name+ " 어린이 탑승 여부 \n"+cal.get(Calendar.MONTH+1)+" 월 "+"달력");
+        sName.setText(" "+name+ " 어린이 탑승 여부 \n"+month+" 월 "+"달력");
     }
 
     private void setCalender() {
@@ -172,8 +171,8 @@ public class Kidsbus extends AppCompatActivity {
             check=ccc.getText().toString();
         if(check.equals("O")){
                 ccc.setText("X");
-
-            editor.commit();
+//
+//            editor.commit();
 //            editor.putString("ID", id);
 //            editor.putString("PW", pw);
 //            editor.putBoolean("checkBox", true);
@@ -190,7 +189,7 @@ public class Kidsbus extends AppCompatActivity {
         }
         else {
                 ccc.setText("O");
-                inputday.get(position).setAttend("T");
+//                inputday.get(position).setAttend("T");
 
 //        try {
 //                thread1 = new GetThread();
@@ -222,7 +221,7 @@ public class Kidsbus extends AppCompatActivity {
         int n;
         int day=0, month1=0;
         int year = today.get(Calendar.YEAR);
-        int month = today.get(Calendar.MONTH)+1; //+1을 하면 11월이 표시됨 +2는 12월.
+        month = today.get(Calendar.MONTH)+1; //+1을 하면 11월이 표시됨 +2는 12월.
         sDay.set(year, month - 1, 1);
         eDay.set(year, month - 1, sDay.getActualMaximum(Calendar.DATE));
         sDay.add(Calendar.DATE, -sDay.get(Calendar.DAY_OF_WEEK) + 1);
@@ -242,7 +241,7 @@ public class Kidsbus extends AppCompatActivity {
         if(n!=43)
             for(int i=n-1; i<c.length; i++, day++) {
                 c[i].set(year, month1, day);
-                Day a=new Day(year,month1,day,"True");
+                Day a=new Day(year,month1,day,"T");
                 inputday.add(a);
             }
     }

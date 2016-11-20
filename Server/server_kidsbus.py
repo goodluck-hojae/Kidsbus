@@ -13,7 +13,14 @@ session = DBSession()
 @app.route('/kidsbus/',methods=['GET'])
 def hello():
     return "kidsbus",200
-
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''LOG IN VERIFICATION'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+#Get Password
+@app.route('/kidsbus/login/<account>/<password>',methods=['GET'])
+def login(account,password):
+    parent = session.query(Parent).filter(Parent.account == account).first()
+    if parent.password == password:
+        return json.dumps({'parent_id': parent.id}),200
+    return "", 401
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''GET'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # Get Parent Id
 @app.route('/kidsbus/get_parent_id_by_name/<name>',methods=['GET'])
@@ -45,14 +52,7 @@ def get_attendance_id_by_child_id(id):
                               'attendacne_child_id': attendacne.child_id,})
     return json.dumps(attendacne_json, ensure_ascii=False)
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''LOG IN VERIFICATION'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-#Get Password
-@app.route('/kidsbus/login/<account>/<password>',methods=['GET'])
-def login(account,password):
-    parent = session.query(Parent).filter(Parent.account == account).first()
-    if parent.password == password:
-        return json.dumps({'parent_id': parent.id}),200
-    return "", 401
+
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''GET INFORMATION WITH ID'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 # Get Parent Info
@@ -244,6 +244,15 @@ def update_parent(id):
     session.commit()
 
     return json.dumps({"update location id":3}, ensure_ascii=False), 200
+
+@app.route('/kidsbus/post/update_location/<int:id>', methods=['GET'])
+def update_location(id):
+    location = session.query(Location).filter(Location.id == id).first()
+    location.latitude = "35.881383"
+    location.longitude = "128.595800"
+    session.commit()
+    return json.dumps({"update lat and long id":3}, ensure_ascii=False), 200
+
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''DELETE'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 @app.route('/kidsbus/get/delete_child/<int:id>', methods=['GET'])
@@ -264,5 +273,4 @@ def delete_location(id):
 #Main
 if __name__ == '__main__':
     app.run(host='155.230.118.252', port=5001, debug = True)
-
 

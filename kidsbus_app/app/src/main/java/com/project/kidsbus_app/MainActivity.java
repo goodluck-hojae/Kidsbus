@@ -70,6 +70,8 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
 
     returnLocationAsync asyncTask = new returnLocationAsync();
     java.util.List<java.util.Map.Entry<String, String>> startAndEndPoints = new java.util.ArrayList<>();
+
+    BusLocation busLocation;
     String get_pinfo;// 저장
     String gL;
     pInfo p; // 부모정보 저장
@@ -77,6 +79,7 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
     pSendThread thread1; // 부모정보 Thread
     GetThread thread0;
     String pLocation;
+    GetBusLocationThread busThread;
 
     private AppCompatDelegate mDelegate;
     TMapView tmapview  ;
@@ -124,12 +127,15 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
             thread1.start();
             thread1.join();
             thread1.interrupt();
+            busThread=new GetBusLocationThread();
+            busThread.start();
+            busThread.join();
+            busThread.interrupt();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         p=JsonManagement.get_pInfo(get_pinfo);
         pLocation=p.getParent_location_id();
-
 
         l=new ArrayList<LocationInfo>();
 
@@ -183,9 +189,21 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
         tmapview.setSKPMapApiKey("8abafa18-e715-38be-b488-cc384c7a73e5");
 
-        NMapPOIdata poiData = new NMapPOIdata(l.size(), mMapViewerResourceProvider);
-        poiData.beginPOIdata(l.size());
+        NMapPOIdata poiData = new NMapPOIdata(l.size()+2, mMapViewerResourceProvider);
+        poiData.beginPOIdata(l.size()+2);
+        if(busLocation.getLon()==null) { //bus 위치값이 null일경우 임의로 지정
         poiData.addPOIitem(128.6093782,35.902852, "버스", markerBUS, 0);
+        java.util.Map.Entry<String, String> busLat = new java.util.AbstractMap.SimpleEntry<>("latitude",  "35.902852");
+        java.util.Map.Entry<String, String> busLong = new java.util.AbstractMap.SimpleEntry<>("longitude", "128.6093782");
+        startAndEndPoints.add(busLat);
+        startAndEndPoints.add(busLong);
+        }else {
+            poiData.addPOIitem(Double.parseDouble(busLocation.getLon()),Double.parseDouble(busLocation.getLat()), "버스", markerBUS, 0);
+            java.util.Map.Entry<String, String> busLat = new java.util.AbstractMap.SimpleEntry<>("latitude", busLocation.getLat());
+            java.util.Map.Entry<String, String> busLong = new java.util.AbstractMap.SimpleEntry<>("longitude", busLocation.getLon());
+            startAndEndPoints.add(busLat);
+            startAndEndPoints.add(busLong);
+        }
 
         for(int i=0; i<l.size();i++)
         {
@@ -235,7 +253,6 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
         // See https://g.co/AppIndexing/AndroidStudio for more information.
     }
 
-
     public class returnLocationAsync extends AsyncTask<java.util.List<java.util.Map.Entry<String, String>>, Void, Void> {
         int totalTime=0;
         int totalDistance=0;
@@ -266,7 +283,6 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
                 wr.write("{test:test}");
                 wr.flush();
 
-
                 //  Here you read any answer from server.
                 BufferedReader serverAnswer = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String line;
@@ -285,7 +301,11 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
                 mSecond = (TextView) findViewById(R.id.text1);
                 mDis = (TextView) findViewById(R.id.text2);
                 mSecond.setText("약 "+(String.valueOf(totalTime%3600/60))+"분 후 도착예정");
-                mDis.setText("약 "+(String.valueOf(totalDistance))+" M남음");
+
+                if(totalDistance > 1000)
+                    mDis.setText("약 "+(String.valueOf(totalDistance/1000))+"."+totalDistance%1000+" KM 남음");
+                else
+                    mDis.setText("약 "+(String.valueOf(totalDistance))+" M 남음");
 
 
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -317,13 +337,9 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
             }
         }
 
-
-
         @Override
         protected void onProgressUpdate(final Void... unused) {
             //Process the result here
-
-
         }
 
     }
@@ -649,6 +665,18 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
         {
             try {
                 gL=NetworkManagement.get("get_all_location_info");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class GetBusLocationThread extends Thread{ //모든 정류장 정보를 받아옴
+        public void run()
+        {
+            try {
+                String bLocation=NetworkManagement.get("get_current_bus_location");
+                busLocation=JsonManagement.getBusLocation(bLocation);
             } catch (Exception e) {
                 e.printStackTrace();
             }

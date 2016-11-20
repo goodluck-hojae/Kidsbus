@@ -3,49 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    tools:context="com.project.kidsbus_app.aMainActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="결과창"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <ToggleButton
-        android:id="@+id/toggle1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textOff="위치정보수신시작"
-        android:textOn="위치정보수신종료"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:onClick="onClickButton"/>
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GPS 에 수신된 현재위치"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="44dp"
-        android:layout_below="@+id/textView2"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true">
 
-    <Button
-        android:text="Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_alignLeft="@+id/toggle1"
-        android:layout_alignStart="@+id/toggle1"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="60dp"
-        android:id="@+id/putLocation"
-        android:onClick="onClickButton"/>
+        <ToggleButton
+            android:id="@+id/toggle1"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:textOff="위치정보수신시작"
+            android:textOn="위치정보수신종료"
+            android:onClick="onClickButton" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GPS 에 수신된 현재위치"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="center"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="결과창"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

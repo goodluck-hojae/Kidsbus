@@ -37,7 +37,7 @@ public class aMainActivity extends AppCompatActivity {
     LocationManager lm;
     double latitude=0.0;
     double longitude=0.0;
-    putLocationAsync asyncTask = new putLocationAsync();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +55,7 @@ public class aMainActivity extends AppCompatActivity {
         //    해결방법은
         //     ① 타이머를 설정하여 GPS_PROVIDER 에서 일정시간 응답이 없는 경우 NETWORK_PROVIDER로 전환
         //     ② 혹은, 둘다 한꺼번헤 호출하여 들어오는 값을 사용하는 방식.
-        bg=(Button)findViewById(R.id.putLocation);
-        bg.setText("버스 출발");
+
         tv = (TextView) findViewById(R.id.textView2);
         tv.setText("위치정보 미수신중");
 
@@ -82,6 +81,15 @@ public class aMainActivity extends AppCompatActivity {
             tv.setText("위치정보 : " + provider + "\n위도 : " + longitude + "\n경도 : " + latitude
                     + "\n고도 : " + altitude + "\n정확도 : "  + accuracy);
 
+            try {
+                    thread = new PostThread();
+                    thread.start();
+                    thread.join();
+                    thread.interrupt();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
         }
         public void onProviderDisabled(String provider) {
             // Disabled시
@@ -98,24 +106,6 @@ public class aMainActivity extends AppCompatActivity {
             Log.d("test", "onStatusChanged, provider:" + provider + ", status:" + status + " ,Bundle:" + extras);
         }
     };
-
-    public class putLocationAsync extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            try {
-                NetworkManagement.BusLocation(Double.toString(longitude),Double.toString(latitude));
-            } catch (Exception e) {
-                Log.e("Cuack", e.toString());
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(final Void... unused) {
-            //Process the result here
-        }
-        }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -133,12 +123,12 @@ public class aMainActivity extends AppCompatActivity {
                     if(tb.isChecked()){
                         tv.setText("수신중..");
                         // GPS 제공자의 정보가 바뀌면 콜백하도록 리스너 등록하기~!!!
-                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
-                                3000, // 통지사이의 최소 시간간격 (miliSecond)
-                                1, // 통지사이의 최소 변경거리 (m)
-                                mLocationListener);
+//                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
+//                                1000, // 통지사이의 최소 시간간격 (miliSecond)
+//                                1, // 통지사이의 최소 변경거리 (m)
+//                                mLocationListener);
                         lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자
-                                3000, // 통지사이의 최소 시간간격 (miliSecond)
+                                500, // 통지사이의 최소 시간간격 (miliSecond)
                                 1, // 통지사이의 최소 변경거리 (m)
                                 mLocationListener);
                     }else{
@@ -149,41 +139,24 @@ public class aMainActivity extends AppCompatActivity {
 
                 }
                 break;
-            case R.id.putLocation :
-                if(bg.getText().toString().equals("버스 출발")){
-                   asyncTask.execute();
-                    bg.setText("버스 정차");
-                }else{
-                    bg.setText("버스 출발");
-                    asyncTask.cancel(true);
-                }
-//                try {
-//                    thread = new PostThread();
-//                    thread.start();
-//                    thread.join();
-//                    thread.interrupt();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-                Log.e(" ", Double.toString(longitude)+" / "+Double.toString(latitude));
-                break;
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.subMenu1:
                 return true;
-            case R.id.subMenu2:
-                return true;
+//            case R.id.subMenu2:
+//                return true;
             case R.id.subMenu3:
                 new AlertDialog.Builder(this)
                         .setTitle("로그아웃").setMessage("로그아웃 하시겠습니까?")
                         .setIcon(R.drawable.ic_kids)
                         .setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
+                                if(!tb.isChecked())
+                                    lm.removeUpdates(mLocationListener);
                                 Intent i = new Intent(aMainActivity.this, Login.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
@@ -213,8 +186,9 @@ public class aMainActivity extends AppCompatActivity {
             d.setPositiveButton("예",new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    asyncTask.cancel(true);// TODO Auto-generated method stub
-                    aMainActivity.this.finish();
+                    if(!tb.isChecked())
+                        lm.removeUpdates(mLocationListener);
+                                       aMainActivity.this.finish();
                 }
             });
             d.setNegativeButton("아니요",new DialogInterface.OnClickListener() {
@@ -236,7 +210,7 @@ public class aMainActivity extends AppCompatActivity {
         {
             try {
                 //String name,String id,String pw,String date,String phNumber,String location_id
-                NetworkManagement.BusLocation(Double.toString(longitude),Double.toString(latitude));
+                NetworkManagement.BusLocation(Double.toString(latitude),Double.toString(longitude));
                 Log.e(" ", Double.toString(longitude)+" / "+Double.toString(latitude));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -244,10 +218,11 @@ public class aMainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(!tb.isChecked())
+            lm.removeUpdates(mLocationListener);
         getDelegate().onDestroy();
     }
 }

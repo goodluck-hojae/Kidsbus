@@ -43,21 +43,21 @@ public class NetworkManagement {
     public NetworkManagement(){
     }
     //post
-    public static String BusLocation (String lon,String lat) throws IOException, JSONException {
+    public static String BusLocation (String lat,String lon) throws IOException, JSONException {
         try {
             String address = "http://155.230.118.252:5001/kidsbus/post_current_bus_location";
 
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost(address);
 
-            StringEntity input = new StringEntity("{\"latitude\":\""+lon+"\",\"longitude\":\""+lat+"\"}");
-            Log.e("SE","{\"latitude\":\""+lon+"\",\"longitude\":\""+lat+"\"}");
+            StringEntity input = new StringEntity("{\"latitude\":\""+lat+"\",\"longitude\":\""+lon+"\"}");
+            Log.e("SE","{\"latitude\":\""+lat+"\",\"longitude\":\""+lon+"\"}");
             input.setContentType("application/json");
             postRequest.setEntity(input);
 
             HttpResponse response = httpClient.execute(postRequest);
 
-            if (response.getStatusLine().getStatusCode() != 201) {
+            if (response.getStatusLine().getStatusCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + response.getStatusLine().getStatusCode());
             }
@@ -100,7 +100,7 @@ public class NetworkManagement {
 
             HttpResponse response = httpClient.execute(postRequest);
 
-            if (response.getStatusLine().getStatusCode() != 201) {
+            if (response.getStatusLine().getStatusCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + response.getStatusLine().getStatusCode());
             }
@@ -137,7 +137,7 @@ public class NetworkManagement {
 
             HttpResponse response = httpClient.execute(postRequest);
 
-            if (response.getStatusLine().getStatusCode() != 201) {
+            if (response.getStatusLine().getStatusCode() != 200) {
                 throw new RuntimeException("Failed : HTTP error code : "
                         + response.getStatusLine().getStatusCode());
             }

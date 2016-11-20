@@ -60,7 +60,7 @@ public class Login extends AppCompatActivity {
 
           switch (btn) {
               case R.id.loginButton:
-                  try {
+                  try  {
                       thread0 = new cLogin();
                       thread0.start();
                       thread0.join();
@@ -69,65 +69,57 @@ public class Login extends AppCompatActivity {
                       e.printStackTrace();
                   }
 
-                  if (c==200) {  //id pw 체크
-                      if(Auto_Login.isChecked()) {
-                          Toast.makeText(this, "로그인", Toast.LENGTH_SHORT).show();
-                          loginChecked = true;
-                          editor.putString("ID", id);
-                          editor.putString("PW", pw);
-                          editor.putBoolean("checkBox", true);
-                          editor.commit();
                   if(id.equals("admin")) {
                       intent = new Intent(this, aMainActivity.class);
                       startActivity(intent);
                       finish();
-                  }
-                    else{
-                          try {
-                              thread1 = new SendThread();
-                              thread1.start();
-                              thread1.join();
-                              thread1.interrupt();
-                          } catch (InterruptedException e) {
-                              e.printStackTrace();
+                  } else {
+                      if (c == 200) {  //id pw 체크
+                          if (Auto_Login.isChecked()) {
+                              Toast.makeText(this, "로그인", Toast.LENGTH_SHORT).show();
+                              loginChecked = true;
+                              editor.putString("ID", id);
+                              editor.putString("PW", pw);
+                              editor.putBoolean("checkBox", true);
+                              editor.commit();
+
+                              try {
+                                  thread1 = new SendThread();
+                                  thread1.start();
+                                  thread1.join();
+                                  thread1.interrupt();
+                              } catch (InterruptedException e) {
+                                  e.printStackTrace();
+                              }
+                              pid = JsonManagement.get_pid(pid);
+                              intent = new Intent(this, MainActivity.class);
+                              intent.putExtra("pid", pid);
+                              startActivity(intent);
+                              finish();
+                          } else {
+                              loginChecked = false;
+                              editor.putBoolean("checkBox", false);
+                              editor.clear();
+                              editor.commit();
+                              try {
+                                  thread1 = new SendThread();
+                                  thread1.start();
+                                  thread1.join();
+                                  thread1.interrupt();
+                              } catch (InterruptedException e) {
+                                  e.printStackTrace();
+                              }
+                              pid = JsonManagement.get_pid(pid);
+                              intent = new Intent(this, MainActivity.class);
+                              intent.putExtra("pid", pid);
+                              startActivity(intent);
+                              finish();
                           }
-                          pid=JsonManagement.get_pid(pid);
-                          intent = new Intent(this, MainActivity.class);
-                          intent.putExtra("pid",pid);
-                          startActivity(intent);
-                          finish();
-                  }
+                      } else if (c == 401) {
+                          Toast.makeText(this, "로그인값 오류", Toast.LENGTH_SHORT).show();
                       } else {
-                          loginChecked = false;
-                          editor.putBoolean("checkBox", false);
-                          editor.clear();
-                          editor.commit();
-                      if(id.equals("admin")){
-                    intent = new Intent(this, aMainActivity.class);
-                    startActivity(intent);
-                    finish();
-                    }else{
-                          try {
-                              thread1 = new SendThread();
-                              thread1.start();
-                              thread1.join();
-                              thread1.interrupt();
-                          } catch (InterruptedException e) {
-                              e.printStackTrace();
-                          }
-                          pid=JsonManagement.get_pid(pid);
-                          intent = new Intent(this, MainActivity.class);
-                          intent.putExtra("pid",pid);
-                          startActivity(intent);
-                          finish();
-                         }
+                          Toast.makeText(this, "서버 오류", Toast.LENGTH_SHORT).show();
                       }
-                  }
-                  else if(c==401){
-                      Toast.makeText(this, "로그인값 오류", Toast.LENGTH_SHORT).show();
-                  }
-                  else{
-                      Toast.makeText(this, "서버 오류", Toast.LENGTH_SHORT).show();
                   }
                   break;
 
