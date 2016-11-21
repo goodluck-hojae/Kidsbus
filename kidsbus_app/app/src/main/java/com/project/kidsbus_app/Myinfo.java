@@ -21,6 +21,7 @@ public class Myinfo extends AppCompatActivity {
     private ArrayList<ListViewItem> mList=null;
     private ListView mListView;
     private ListviewAdapter mAdapter;
+    ArrayList<LocationInfo> l;
 
     TextView pn;
     TextView pp;
@@ -30,6 +31,8 @@ public class Myinfo extends AppCompatActivity {
     pSendThread thread1;
     cSendThread thread2;
     dSendThread thread3;
+    GetThread thread4;
+    String myLocation;
     String pid;
     String cid;
     String get_pinfo;
@@ -58,10 +61,22 @@ public class Myinfo extends AppCompatActivity {
             thread1.start();
             thread1.join();
             thread1.interrupt();
+            thread4 = new GetThread();
+            thread4.start();
+            thread4.join();
+            thread4.interrupt();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         p=JsonManagement.get_pInfo(get_pinfo);
+
+        for(int i=0;i<l.size();i++)
+        {
+            if(p.getParent_location_id().equals(String.valueOf(i))){
+                myLocation=l.get(i).getName();
+                break;
+            }
+        }
 
         pn.setText("이름     :   "+p.getParent_name());
 
@@ -73,7 +88,7 @@ public class Myinfo extends AppCompatActivity {
 
         pb.setText("나이     :   "+strResult+" 세");
         pp.setText("연락처 : "+p.getParent_phone_number());
-        pl.setText("정류장 : "+p.getParent_location_id());
+        pl.setText("정류장 : ("+(Integer.parseInt(p.getParent_location_id())+1)+"번) "+myLocation);
         set_List();
     }
 
@@ -196,6 +211,19 @@ public class Myinfo extends AppCompatActivity {
         {
             try {
                 NetworkManagement.del_child(cid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class GetThread extends Thread{ //모든 정류장 정보를 받아옴
+        public void run()
+        {
+            try {
+                String gL=NetworkManagement.get("get_all_location_info");
+                l=JsonManagement.get_loction(gL);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

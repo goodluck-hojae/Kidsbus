@@ -180,7 +180,8 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
         mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
 
         int markerBUS = NMapPOIflagType.BUS;
-        int[] busmaker ={NMapPOIflagType.IC1, NMapPOIflagType.IC2,NMapPOIflagType.IC3,NMapPOIflagType.IC3,NMapPOIflagType.IC3,NMapPOIflagType.IC3,NMapPOIflagType.IC3,NMapPOIflagType.IC3,NMapPOIflagType.IC3,NMapPOIflagType.IC3};
+        int[] busmaker ={NMapPOIflagType.IC1, NMapPOIflagType.IC2,NMapPOIflagType.IC3,NMapPOIflagType.IC4,NMapPOIflagType.IC5,
+                NMapPOIflagType.IC4,NMapPOIflagType.IC3,NMapPOIflagType.IC2,NMapPOIflagType.IC1}; // 오류방지 추가
         int markerArr=NMapPOIflagType.ARR;
 
         NMapPathData pathData = new NMapPathData(6);
@@ -303,7 +304,7 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
                 mSecond.setText("약 "+(String.valueOf(totalTime%3600/60))+"분 후 도착예정");
 
                 if(totalDistance > 1000)
-                    mDis.setText("약 "+(String.valueOf(totalDistance/1000))+"."+totalDistance%1000+" KM 남음");
+                    mDis.setText("약 "+(String.valueOf(totalDistance/1000))+"."+totalDistance%1000/100+" KM 남음");
                 else
                     mDis.setText("약 "+(String.valueOf(totalDistance))+" M 남음");
 

@@ -116,9 +116,9 @@ public class Login extends AppCompatActivity {
                               finish();
                           }
                       } else if (c == 401) {
-                          Toast.makeText(this, "로그인값 오류", Toast.LENGTH_SHORT).show();
+                          Toast.makeText(this, "아이디 또는 비밀번호를 다시 확인하세요.", Toast.LENGTH_SHORT).show();
                       } else {
-                          Toast.makeText(this, "서버 오류", Toast.LENGTH_SHORT).show();
+                          Toast.makeText(this, "아이디 또는 비밀번호를 다시 확인하세요.", Toast.LENGTH_SHORT).show();
                       }
                   }
                   break;
