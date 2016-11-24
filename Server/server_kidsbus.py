@@ -183,6 +183,22 @@ def post_current_bus_location():
     bus_longitude = location_json['longitude']
     return json.dumps({"latitude" : bus_latitude,
                         "longitude" : bus_longitude}, ensure_ascii=False), 200
+
+# Post recent bus location information
+@app.route('/kidsbus/post_current', methods=['GET'])
+def post_current():
+
+    location_json = request.json
+    global bus_latitude
+    global bus_longitude
+    #bus_latitude = "35.1796"
+    #bus_longitude = "129.0756"
+    bus_latitude = "35.8251"
+    bus_longitude = "128.7415"
+    return json.dumps({"latitude" : bus_latitude,
+                        "longitude" : bus_longitude}, ensure_ascii=False), 200
+#부산 35.1796° N, 129.0756° E
+#경산 35.8251° N, 128.7415° E
 # Register Attendance
 @app.route('/kidsbus/post/register_attendance', methods=['POST'])
 def register_attendance():
