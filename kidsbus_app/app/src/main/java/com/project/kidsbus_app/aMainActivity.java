@@ -82,13 +82,13 @@ public class aMainActivity extends AppCompatActivity {
                     + "\n고도 : " + altitude + "\n정확도 : "  + accuracy);
 
             try {
-                    thread = new PostThread();
-                    thread.start();
-                    thread.join();
-                    thread.interrupt();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                thread = new PostThread();
+                thread.start();
+                thread.join();
+                thread.interrupt();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
         public void onProviderDisabled(String provider) {
@@ -136,9 +136,19 @@ public class aMainActivity extends AppCompatActivity {
                         lm.removeUpdates(mLocationListener);  //  미수신할때는 반드시 자원해체를 해주어야 한다.
                     }
                 }catch(SecurityException ex){
-
                 }
                 break;
+            case R.id.AdminButton:
+                longitude = 128.7777777; //경도
+                latitude = 35.8888888;   //위도
+                try {
+                    thread = new PostThread();
+                    thread.start();
+                    thread.join();
+                    thread.interrupt();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
     }
 
@@ -188,7 +198,7 @@ public class aMainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     if(!tb.isChecked())
                         lm.removeUpdates(mLocationListener);
-                                       aMainActivity.this.finish();
+                    aMainActivity.this.finish();
                 }
             });
             d.setNegativeButton("아니요",new DialogInterface.OnClickListener() {

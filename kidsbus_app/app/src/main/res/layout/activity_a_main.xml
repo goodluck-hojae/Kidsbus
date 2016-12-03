@@ -38,6 +38,13 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginTop="10dp" />
 
+        <Button
+            android:text="도착"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/AdminButton"
+            android:onClick="onClickButton"/>
+
     </LinearLayout>
 
 </RelativeLayout>

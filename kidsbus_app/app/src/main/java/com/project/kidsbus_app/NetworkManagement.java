@@ -78,7 +78,7 @@ public class NetworkManagement {
             e.printStackTrace();
         }
         return "Success";
-    }
+}
 
     //post
     public static String post_parent (String address,String name,String id,String pw,String date,String phNumber,String location_id) throws IOException, JSONException {
@@ -195,7 +195,6 @@ public class NetworkManagement {
             while ((input = reader.readLine()) != null) {
                 sb.append(input);
             }
-
             Log.i("test",sb.toString());
             return sb.toString();
         } catch (MalformedURLException e) {

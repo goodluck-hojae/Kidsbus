@@ -1,6 +1,5 @@
 package com.project.kidsbus_app;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -42,7 +41,6 @@ import com.nhn.android.maps.NMapOverlay;
 import com.nhn.android.maps.NMapOverlayItem;
 import com.nhn.android.maps.NMapView;
 import com.nhn.android.maps.NMapView.OnMapStateChangeListener;
-import com.nhn.android.maps.maplib.NGPoint;
 import com.nhn.android.maps.maplib.NGeoPoint;
 import com.nhn.android.maps.nmapmodel.NMapError;
 import com.nhn.android.maps.nmapmodel.NMapPlacemark;
@@ -72,7 +70,7 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends NMapActivity implements OnMapStateChangeListener, NMapOverlayManager.OnCalloutOverlayListener {
 
     returnLocationAsync asyncTask = new returnLocationAsync();
-    java.util.List<java.util.Map.Entry<String, String>> startAndEndPoints = new java.util.ArrayList<>();
+
 
     BusLocation busLocation;
     String get_pinfo;// 저장
@@ -91,6 +89,7 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
 
     TextView gtest;
     String pid;
+
 
     // API-KEY
     public static final String API_KEY = "adePfbPVnbdl5wzgDoPG";  //<---맨위에서 발급받은 본인 ClientID 넣으세요.
@@ -114,24 +113,29 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
 
-    Activity act;
-    NMapPathData pathData;
+    //추가 테스트
+    NMapPathData pathData = new NMapPathData(6);
+    NMapPOIdata poiData;
+
+    int markerBUS;
+    int[] busmaker;
+    int markerArr;
+
     NMapPOIdataOverlay poiDataOverlay;
-    static TextView mSecond;
-    static TextView mDis;
-    static int totalTime=0;
-    static int totalDistance=0;
+    NMapPOIitem item;
+    boolean esc=true;
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        act = this;
+
         gtest = (TextView) findViewById(R.id.get_test);
         Intent intent = getIntent();
         pid = (String) intent.getSerializableExtra("pid");
-        gtest.setText("안전운행하세요.\nCopyright 2016ⓒ Team 키즈버스");
+        gtest.setText("항상 함께 하겠습니다.\nCopyright 2016ⓒ Team 키즈버스");
 
         try {
             thread1 = new pSendThread();
@@ -145,10 +149,10 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        p = JsonManagement.get_pInfo(get_pinfo);
-        pLocation = p.getParent_location_id();
+        p=JsonManagement.get_pInfo(get_pinfo);
+        pLocation=p.getParent_location_id();
 
-        l = new ArrayList<LocationInfo>();
+        l=new ArrayList<LocationInfo>();
 
         try {
             thread0 = new GetThread();
@@ -158,7 +162,7 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        l = JsonManagement.get_loction(gL);
+        l=JsonManagement.get_loction(gL);
 
 
         // 네이버 지도를 넣기 위한 LinearLayout 컴포넌트
@@ -190,107 +194,73 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
 
         mOverlayManager.setOnCalloutOverlayListener(onCalloutOverlayListener);
 
-        final int markerBUS = NMapPOIflagType.BUS;
-        final int[] busmaker = {NMapPOIflagType.IC1, NMapPOIflagType.IC2, NMapPOIflagType.IC3, NMapPOIflagType.IC4, NMapPOIflagType.IC5,
+        markerBUS = NMapPOIflagType.BUS;
+        busmaker = new int[]{NMapPOIflagType.IC1, NMapPOIflagType.IC2, NMapPOIflagType.IC3, NMapPOIflagType.IC4, NMapPOIflagType.IC5,
                 NMapPOIflagType.IC4, NMapPOIflagType.IC3, NMapPOIflagType.IC2, NMapPOIflagType.IC1}; // 오류방지 추가
-        final int markerArr = NMapPOIflagType.ARR;
+        markerArr=NMapPOIflagType.ARR;
 
-        pathData = new NMapPathData(6);
-        pathData.initPathData();
+
+
         tmapview = new TMapView(this);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
         tmapview.setSKPMapApiKey("8abafa18-e715-38be-b488-cc384c7a73e5");
 
-        final NMapPOIdata poiData = new NMapPOIdata(l.size() + 2, mMapViewerResourceProvider);
-        poiData.beginPOIdata(l.size() + 2);
-        if (busLocation.getLon() == null) { //bus 위치값이 null일경우 임의로 지정
-            poiData.addPOIitem(128.6093782, 35.902852, "버스", markerBUS, 0);
-            java.util.Map.Entry<String, String> busLat = new java.util.AbstractMap.SimpleEntry<>("latitude", "35.902852");
-            java.util.Map.Entry<String, String> busLong = new java.util.AbstractMap.SimpleEntry<>("longitude", "128.6093782");
-            startAndEndPoints.add(busLat);
-            startAndEndPoints.add(busLong);
-        } else {
-            poiData.addPOIitem(Double.parseDouble(busLocation.getLon()), Double.parseDouble(busLocation.getLat()), "버스", markerBUS, 0);
-            java.util.Map.Entry<String, String> busLat = new java.util.AbstractMap.SimpleEntry<>("latitude", busLocation.getLat());
-            java.util.Map.Entry<String, String> busLong = new java.util.AbstractMap.SimpleEntry<>("longitude", busLocation.getLon());
-            startAndEndPoints.add(busLat);
-            startAndEndPoints.add(busLong);
-        }
 
+
+        poiData = new NMapPOIdata(l.size() + 1, mMapViewerResourceProvider);
+        poiData.beginPOIdata(l.size() + 1);
+
+        item = poiData.addPOIitem(Double.parseDouble(busLocation.getLon()), Double.parseDouble(busLocation.getLat()), "버스", markerBUS, 0);
         for (int i = 0; i < l.size(); i++) {
-            java.util.Map.Entry<String, String> startLatitude = new java.util.AbstractMap.SimpleEntry<>("latitude", l.get(i).getLat());
-            java.util.Map.Entry<String, String> startLongitude = new java.util.AbstractMap.SimpleEntry<>("longitude", l.get(i).getLon());
-            startAndEndPoints.add(startLatitude);
-            startAndEndPoints.add(startLongitude);
             if (Integer.parseInt(p.getParent_location_id()) == i) {
                 poiData.addPOIitem(Double.parseDouble(l.get(i).getLon()), Double.parseDouble(l.get(i).getLat()), l.get(i).getName(), markerArr, 0);
             } else {
                 poiData.addPOIitem(Double.parseDouble(l.get(i).getLon()), Double.parseDouble(l.get(i).getLat()), l.get(i).getName(), busmaker[i], 0);
             }
         }
-
         poiData.endPOIdata();
-
         poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
         poiDataOverlay.showAllPOIdata(0);
         poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
 
-        //asyncTask.execute(startAndEndPoints);
+        asyncTask.setOutputView((TextView) findViewById(R.id.text1), (TextView) findViewById(R.id.text2));
+        asyncTask.execute(l.size());
 
-        try {
-            asyncTask.execute(startAndEndPoints);
-            //For synchronization
-            asyncTask.get();
-            updateText(act);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+
+        //For synchronization
+//            asyncTask.get();
+
+        //location information in pairList
+
+
+
+//        poiDataOverlay.showAllPathData(0);
+
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+    }
+
+
+
+
+    public class returnLocationAsync extends AsyncTask<Integer, Object, String> {
+        TextView mOutput;
+        TextView sOutput;
+        int totalTime=0;
+        int totalDistance=0;
+        java.util.List<java.util.Map.Entry<String, String>> startAndEndPoints = new java.util.ArrayList<>();
+        NMapPathDataOverlay pathDataOverlay;
+
+        public void setOutputView(TextView mtxt,TextView stxt) {
+            mOutput = mtxt;
+            sOutput=stxt;
         }
 
-       // Log.i("pair", "test");
-        for (int i = 0; i < pairList.size(); i += 2) {
-       //    Log.i("pair", pairList.get(i).getKey() + " " + Double.parseDouble(pairList.get(i + 1).getValue()));
-        pathData.addPathPoint(Double.parseDouble(pairList.get(i).getValue()), Double.parseDouble(pairList.get(i + 1).getValue()), 0);
-        }
-        pathData.endPathData();  //경로받기종료
-
-        mOverlayManager.createPathDataOverlay(pathData);
-
-
-        mSecond = (TextView) findViewById(R.id.text1);
-        mSecond.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                totalTime=0;
-                totalDistance=0;
-                final NMapPOIdata poiData = new NMapPOIdata(l.size() + 2, mMapViewerResourceProvider);
-                poiData.beginPOIdata(l.size() + 2);
-                if (busLocation.getLon() == null) { //bus 위치값이 null일경우 임의로 지정
-                    poiData.addPOIitem(128.6093782, 35.902852, "버스", markerBUS, 0);
-                } else {
-                    poiData.addPOIitem(Double.parseDouble(busLocation.getLon()), Double.parseDouble(busLocation.getLat()), "버스", markerBUS, 0);
-                }
-
-                for (int i = 0; i < l.size(); i++) {
-                    if (Integer.parseInt(p.getParent_location_id()) == i) {
-                        poiData.addPOIitem(Double.parseDouble(l.get(i).getLon()), Double.parseDouble(l.get(i).getLat()), l.get(i).getName(), markerArr, 0);
-                    } else {
-                        poiData.addPOIitem(Double.parseDouble(l.get(i).getLon()), Double.parseDouble(l.get(i).getLat()), l.get(i).getName(), busmaker[i], 0);
-                    }
-                }
-
-                poiData.endPOIdata();
-
-                poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-                poiDataOverlay.showAllPOIdata(0);
-                poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
-
-                mOverlayManager.clearOverlays();
-                pathData.initPathData();
-                pairList.clear();
-                try{
+        @Override
+        protected String doInBackground(Integer... params) {
+            while (esc=true) {
+                try {
                     busThread = new GetBusLocationThread();
                     busThread.start();
                     busThread.join();
@@ -298,83 +268,54 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                try {
-                    startAndEndPoints.set(0, new java.util.AbstractMap.SimpleEntry<>("latitude", busLocation.getLat()));
-                    startAndEndPoints.set(1, new java.util.AbstractMap.SimpleEntry<>("longitude", busLocation.getLon()));
-                    poiData.removePOIitem(0);
-                    poiData.addPOIitem(Double.parseDouble(busLocation.getLon()), Double.parseDouble(busLocation.getLat()), "버스", markerBUS, 0);
-                    poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
-                    poiDataOverlay.showAllPOIdata(0);
-                    poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
-                    for (int i = 0; i < startAndEndPoints.size(); i++)
-                        Log.i("test", String.valueOf(startAndEndPoints.get(i)));
-                    returnLocationAsync asyncTask = new returnLocationAsync();
-                    asyncTask.execute(startAndEndPoints);
-                    //For synchronization
-                    asyncTask.get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
+
+                java.util.List<java.util.Map.Entry<String, String>> startAndEndPoints = new java.util.ArrayList<>();
+                pathData.initPathData();
+
+                java.util.Map.Entry<String, String> busLat = new java.util.AbstractMap.SimpleEntry<>("latitude", busLocation.getLat());
+                java.util.Map.Entry<String, String> busLong = new java.util.AbstractMap.SimpleEntry<>("longitude", busLocation.getLon());
+                startAndEndPoints.add(busLat);
+                startAndEndPoints.add(busLong);
+
+                for (int i = 0; i < l.size(); i++) {
+                    java.util.Map.Entry<String, String> startLatitude = new java.util.AbstractMap.SimpleEntry<>("latitude", l.get(i).getLat());
+                    java.util.Map.Entry<String, String> startLongitude = new java.util.AbstractMap.SimpleEntry<>("longitude", l.get(i).getLon());
+                    startAndEndPoints.add(startLatitude);
+                    startAndEndPoints.add(startLongitude);
                 }
-                //location information in pairList
+
+                for (int i = 0; i < l.size() * 2; i += 2) {
+                    searchRoute(startAndEndPoints.get(i + 1).getValue(), startAndEndPoints.get(i).getValue(), startAndEndPoints.get(i + 3).getValue(), startAndEndPoints.get(i + 2).getValue());
+                }
+
+                startAndEndPoints.clear();
+
                 Log.i("pair", "test");
                 for (int i = 0; i < pairList.size(); i += 2) {
                     Log.i("pair", pairList.get(i).getKey() + " " + Double.parseDouble(pairList.get(i + 1).getValue()));
                     pathData.addPathPoint(Double.parseDouble(pairList.get(i).getValue()), Double.parseDouble(pairList.get(i + 1).getValue()), 0);
                 }
                 pathData.endPathData();  //경로받기종료
-                mOverlayManager.createPathDataOverlay(pathData);
 
-                updateText(act);
+                publishProgress(Integer.toString(totalTime), Integer.toString(totalDistance), pathData);
+
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    ;
+                }
             }
-        });
-
-    }
-    public static void updateText(Activity act)
-    {
-        mSecond = (TextView) act.findViewById(R.id.text1);
-        mDis = (TextView) act.findViewById(R.id.text2);
-
-        act.runOnUiThread(new Runnable()
-        {
-            public void run()
-            {
-                mSecond.setText("약 " + (String.valueOf(totalTime / 60)) + "분 후 도착예정");
-                if (totalDistance > 1000)
-                    mDis.setText("약 " + (String.valueOf(totalDistance / 1000)) + "." + totalDistance % 1000 / 100 + " KM 남음");
-                else
-                    mDis.setText("약 " + (String.valueOf(totalDistance)) + " M 남음");
-
-            }
-
-        });
-    }
-    public class returnLocationAsync extends AsyncTask<java.util.List<java.util.Map.Entry<String, String>>, Void, Void> {
-        @Override
-        protected Void doInBackground(java.util.List<java.util.Map.Entry<String, String>>... location) {
-
-            for (int i = 0; i < location[0].size() - 3; i += 2) {
-                searchRoute(location[0].get(i + 1).getValue(), location[0].get(i).getValue(), location[0].get(i + 3).getValue(), location[0].get(i + 2).getValue());
-                Log.i("test",location[0].get(i).getValue());
-                Log.i("test",location[0].get(i + 1).getValue());
-                Log.i("test",location[0].get(i+ 2).getValue());
-                Log.i("test",location[0].get(i + 3).getValue());
-            }
-            return null;
+            return "종료";
         }
 
-
         protected void searchRoute(String startX, String startY, String endX, String endY) {
-            Log.i("test","result"+startX);
-            Log.i("test","result"+startY);
-            Log.i("test","result"+endX);
-            Log.i("test","result"+endY);
+
             try {
                 URL url = new URL("https://apis.skplanetx.com/tmap/routes?version=1&endX=" + endX + "&endY=" + endY + "&startX=" + startX + "&startY=" + startY + "&reqCoordType=WGS84GEO&resCoordType=WGS84GEO&tollgateFareOption=1&roadType=32&directionOption=0&endRpFlag=16&endPoiId=67516&gpsTime=10000&angle=90&speed=60&uncetaintyP=3&uncetaintyA=3&uncetaintyAP=12&camOption=0&carType=0");  //Open the connection here, and remember to close it when job its done.
                 URLConnection conn = url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestProperty("appKey", "8abafa18-e715-38be-b488-cc384c7a73e5");
+                conn.setRequestProperty("appKey",  "f5e246cf-c38e-3c27-8cb7-3c8f302ad213");
                 conn.setDoOutput(true);
 
                 OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
@@ -390,17 +331,18 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
                     jsonString += line;
                     //use it as you need, if server send something back you will get it here.
                 }
+
                 Log.i("LINE: ", jsonString); //<--If any response from server
                 JSONObject jsonObject = new JSONObject(jsonString);
                 JSONArray jsonArray = jsonObject.getJSONArray("features");
 
-                totalTime += Integer.parseInt(jsonArray.getJSONObject(0).getJSONObject("properties").getString("totalTime"));
-                totalDistance +=Integer.parseInt(jsonArray.getJSONObject(0).getJSONObject("properties").getString("totalDistance"));
+                totalTime = Integer.parseInt(jsonArray.getJSONObject(0).getJSONObject("properties").getString("totalTime"));
+                totalDistance =Integer.parseInt(jsonArray.getJSONObject(0).getJSONObject("properties").getString("totalDistance"));
 
 
-                Log.i("NUMBER", "START"+startX + startY);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONArray jsonCoordinates = jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates");
+
                     for (int j = 0; j < jsonCoordinates.length(); j++) {
                         if (!jsonArray.getJSONObject(i).getJSONObject("geometry").getJSONArray("coordinates").getString(0).startsWith("[")) {
                             java.util.Map.Entry<String, String> latitude = new java.util.AbstractMap.SimpleEntry<>("longitude", jsonCoordinates.getString(0));
@@ -419,23 +361,49 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
                         }
                     }
                 }
-                Log.i("NUMBER", "END"+endX + endY);
                 wr.close();
                 serverAnswer.close();
-
             } catch (Exception e) {
                 Log.e("Cuack", e.toString());
             }
         }
 
-        protected void onPostExecute(){
-        }
         @Override
-        protected void onProgressUpdate(final Void... unused) {
+        protected void onProgressUpdate(Object... integer) {
+
+            item.setPoint(new NGeoPoint(Double.parseDouble(busLocation.getLon()),Double.parseDouble(busLocation.getLat())));
+            pathDataOverlay = mOverlayManager.createPathDataOverlay(pathData);
+
+            sOutput.setText("약 "+(Integer.parseInt(integer[0].toString())%3600/60)+"분 후 도착예정");
+            if(Integer.parseInt(integer[1].toString()) > 1000)
+                mOutput.setText("약 "+(String.valueOf(Integer.parseInt(integer[1].toString())/1000))+"."+totalDistance%1000/100+" KM 남음");
+            else
+                mOutput.setText("약 "+(integer[1])+" M 남음");
             //Process the result here
+
+            pairList.clear();
+            super.onProgressUpdate(integer);
         }
 
+        @Override
+        protected void onPostExecute(String str)
+        {
+            mOutput.setText("운행종료");
+            super.onPostExecute(str);
+        }
+
+        @Override protected void onCancelled() {
+
+            mOutput.setText("종료중");
+            super.onCancelled(); }
     }
+
+    //    public void onPointChanged(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {
+//         mMapController.setMapCenter();
+//        NGeoPoint point = item.getPoint();
+//
+//        Log.i("", "onPointChanged: point=" );
+//    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -467,6 +435,20 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
                         .setIcon(R.drawable.ic_kids)
                         .setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
+                                esc =false;
+                                try
+                                {
+                                    if (asyncTask.getStatus() == AsyncTask.Status.RUNNING)
+                                    {
+                                        asyncTask.cancel(true);
+                                    }
+                                    else
+                                    {
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                }
                                 Intent i = new Intent(MainActivity.this, Login.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(i);
@@ -497,6 +479,20 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // TODO Auto-generated method stub
+                    esc =false;
+                    try
+                    {
+                        if (asyncTask.getStatus() == AsyncTask.Status.RUNNING)
+                        {
+                            asyncTask.cancel(true);
+                        }
+                        else
+                        {
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                    }
                     MainActivity.this.finish();
                 }
             });
@@ -515,7 +511,8 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
     public void onMapInitHandler(NMapView mapview, NMapError errorInfo) {
         if (errorInfo == null) { // success
             mMapController.setMapCenter(
-                    new NGeoPoint(Double.parseDouble(busLocation.getLon()),Double.parseDouble(busLocation.getLat())), 11);
+                    new NGeoPoint(128.609681,35.892520), 11);
+
         } else { // fail
             Log.e("NMAP", "onMapInitHandler: error="
                     + errorInfo.toString());
@@ -598,6 +595,7 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
 
             mMapController.setMapCenter(new NGeoPoint(myLocation.getLongitude(),myLocation.getLatitude()), 11);
 
+
 //            findPlacemarkAtLocation(myLocation.getLongitude(), myLocation.getLatitude());
             //위도경도를 주소로 변환
 
@@ -636,6 +634,14 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
     /**
      * 지도 레벨 변경 시 호출되며 변경된 지도 레벨이 파라미터로 전달된다.
      */
+    public void onFocusChanged(NMapPOIdataOverlay poiDataOverlay, NMapPOIitem item) {
+        if (item != null) {
+            Log.i("", "onFocusChanged: " + item.toString());
+        } else {
+            Log.i("", "onFocusChanged: ");
+        }
+    }
+
     @Override
     public void onZoomLevelChange(NMapView mapview, int level) {
     }
@@ -718,10 +724,45 @@ public class MainActivity extends NMapActivity implements OnMapStateChangeListen
         getDelegate().onConfigurationChanged(newConfig);
     }
 
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+        esc =false;
+        try
+        {
+            if (asyncTask.getStatus() == AsyncTask.Status.RUNNING)
+            {
+                asyncTask.cancel(true);
+            }
+            else
+            {
+            }
+        }
+        catch (Exception e)
+        {
+        }
+    }
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        esc =false;
+        try
+        {
+            if (asyncTask.getStatus() == AsyncTask.Status.RUNNING)
+            {
+                asyncTask.cancel(true);
+            }
+            else
+            {
+            }
+        }
+        catch (Exception e)
+        {
+        }
+
         getDelegate().onDestroy();
     }
 

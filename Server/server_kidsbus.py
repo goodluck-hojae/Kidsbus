@@ -100,8 +100,8 @@ def get_all_location_info():
                        'location_longitude':  location.longitude, })
     return json.dumps(location_json , ensure_ascii=False)
 
-bus_latitude = None
-bus_longitude = None
+bus_latitude = "35.881383"
+bus_longitude = "128.595800"
 @app.route('/kidsbus/get_current_bus_location',methods=['GET'])
 def get_current_bus_location():
     return json.dumps({"latitude" : bus_latitude,
